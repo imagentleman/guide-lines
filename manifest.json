@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Guide lines",
-  "version": "2",
+  "version": "3",
   "description": "Easily check the visual alignment of the page elements.",
   "icons": {
     "16": "16.png",

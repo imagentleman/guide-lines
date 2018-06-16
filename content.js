@@ -63,3 +63,6 @@ chrome.runtime.onMessage.addListener(function(request) {
     init();
   }
 });
+
+start = true;
+init();
