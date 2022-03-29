@@ -54,7 +54,7 @@ function destroy() {
   window.removeEventListener("mousemove", mouseMoveHandler);
 }
 
-chrome.runtime.onMessage.addListener(function(request) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.type === "stop") {
     start = false;
     destroy();
@@ -62,6 +62,7 @@ chrome.runtime.onMessage.addListener(function(request) {
     start = true;
     init();
   }
+  sendResponse({});
 });
 
 start = true;
