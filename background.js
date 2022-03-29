@@ -5,19 +5,20 @@ function start(tab) {
   if (activeTabs[tab.id]) {
     activeTabs[tab.id] = false;
 
-    chrome.browserAction.setIcon({
+    chrome.action.setIcon({
       path: {
-        "16": "b16.png",
-        "24": "b24.png",
-        "32": "b32.png"
-      }
+        16: "b16.png",
+        24: "b24.png",
+        32: "b32.png",
+      },
     });
 
     chrome.tabs.sendMessage(tab.id, { type: "stop" });
   } else {
     if (!readyTabs[tab.id]) {
-      chrome.tabs.executeScript(tab.id, {
-        file: "content.js"
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ["content.js"],
       });
 
       readyTabs[tab.id] = true;
@@ -25,12 +26,12 @@ function start(tab) {
 
     activeTabs[tab.id] = true;
 
-    chrome.browserAction.setIcon({
+    chrome.action.setIcon({
       path: {
-        "16": "m16.png",
-        "24": "m24.png",
-        "32": "m32.png"
-      }
+        16: "m16.png",
+        24: "m24.png",
+        32: "m32.png",
+      },
     });
 
     chrome.tabs.sendMessage(tab.id, { type: "start" });
@@ -39,30 +40,31 @@ function start(tab) {
 
 function restart(tab) {
   if (activeTabs[tab.id]) {
-    chrome.browserAction.setIcon({
+    chrome.action.setIcon({
       path: {
-        "16": "m16.png",
-        "24": "m24.png",
-        "32": "m32.png"
-      }
+        16: "m16.png",
+        24: "m24.png",
+        32: "m32.png",
+      },
     });
 
     chrome.tabs.sendMessage(tab.id, { type: "start" });
   } else {
-    chrome.browserAction.setIcon({
+    chrome.action.setIcon({
       path: {
-        "16": "b16.png",
-        "24": "b24.png",
-        "32": "b32.png"
-      }
+        16: "b16.png",
+        24: "b24.png",
+        32: "b32.png",
+      },
     });
   }
 }
 
-chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.action.onClicked.addListener(function (tab) {
   if (!readyTabs[tab.id]) {
-    chrome.tabs.executeScript(tab.id, {
-      file: "content.js"
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ["content.js"],
     });
 
     readyTabs[tab.id] = true;
@@ -71,21 +73,21 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   start(tab);
 });
 
-chrome.tabs.onActivated.addListener(function(activeInfo) {
+chrome.tabs.onActivated.addListener(function (activeInfo) {
   restart({ id: activeInfo.tabId });
 });
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   if (changeInfo.status === "complete") {
     readyTabs[tabId] = false;
     activeTabs[tabId] = false;
 
-    chrome.browserAction.setIcon({
+    chrome.action.setIcon({
       path: {
-        "16": "b16.png",
-        "24": "b24.png",
-        "32": "b32.png"
-      }
+        16: "b16.png",
+        24: "b24.png",
+        32: "b32.png",
+      },
     });
   }
 });
